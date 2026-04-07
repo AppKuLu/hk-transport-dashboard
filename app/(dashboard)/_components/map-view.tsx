@@ -1,8 +1,14 @@
 "use client";
 
-import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
+import dynamic from "next/dynamic";
 import type { LatLngExpression } from "leaflet";
+import { Marker, Popup, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
+
+const MapContainer = dynamic<any>(
+  () => import("react-leaflet").then((m) => m.MapContainer),
+  { ssr: false }
+);
 
 const center: LatLngExpression = [22.3193, 114.1694];
 
@@ -49,7 +55,6 @@ export default function MapView({ cctv, journeyTimes, etas }: Props) {
           <h2 className="mb-3 text-lg font-medium">Journey Time</h2>
           <pre className="text-xs whitespace-pre-wrap">{JSON.stringify(journeyTimes, null, 2)}</pre>
         </div>
-
         <div className="rounded-xl border border-slate-800 bg-slate-900 p-4">
           <h2 className="mb-3 text-lg font-medium">ETA</h2>
           <pre className="text-xs whitespace-pre-wrap">{JSON.stringify(etas, null, 2)}</pre>
