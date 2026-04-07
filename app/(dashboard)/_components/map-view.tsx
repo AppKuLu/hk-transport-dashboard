@@ -1,14 +1,8 @@
 "use client";
 
-import dynamic from "next/dynamic";
+import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import type { LatLngExpression } from "leaflet";
-import { Marker, Popup, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-
-const MapContainer = dynamic<any>(
-  () => import("react-leaflet").then((m) => m.MapContainer),
-  { ssr: false }
-);
 
 const center: LatLngExpression = [22.3193, 114.1694];
 
@@ -23,30 +17,18 @@ export default function MapView({ cctv, journeyTimes, etas }: Props) {
     <div className="grid gap-6 lg:grid-cols-2">
       <section className="h-[70vh] overflow-hidden rounded-xl border border-slate-800">
         <MapContainer center={center} zoom={11} scrollWheelZoom={false} style={{ height: "100%", width: "100%" }}>
-          <TileLayer
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            attribution="&copy; OpenStreetMap contributors"
-          />
-          <Marker position={center}>
-            <Popup>Hong Kong</Popup>
-          </Marker>
-
-          {cctv
-            .filter((x) => Number.isFinite(x.lat) && Number.isFinite(x.lon))
-            .map((cam) => (
-              <Marker key={cam.id} position={[cam.lat as number, cam.lon as number]}>
-                <Popup>
-                  <div>
-                    <div>{cam.name}</div>
-                    {cam.imageUrl ? (
-                      <a href={cam.imageUrl} target="_blank" rel="noreferrer">
-                        Open image
-                      </a>
-                    ) : null}
-                  </div>
-                </Popup>
-              </Marker>
-            ))}
+          <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" attribution="&copy; OpenStreetMap contributors" />
+          <Marker position={center}><Popup>Hong Kong</Popup></Marker>
+          {cctv.filter(x => Number.isFinite(x.lat) && Number.isFinite(x.lon)).map((cam) => (
+            <Marker key={cam.id} position={[cam.lat as number, cam.lon as number] as LatLngExpression}>
+              <Popup>
+                <div>
+                  <div>{cam.name}</div>
+                  {cam.imageUrl ? <a href={cam.imageUrl} target="_blank" rel="noreferrer">Open image</a> : null}
+                </div>
+              </Popup>
+            </Marker>
+          ))}
         </MapContainer>
       </section>
 
