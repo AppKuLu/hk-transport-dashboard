@@ -1,17 +1,13 @@
 import MapView from "./_components/map-view";
-
-async function fetchJson(path: string) {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "";
-  const res = await fetch(`${baseUrl}${path}`, { cache: "no-store" });
-  if (!res.ok) return { items: [] };
-  return res.json();
-}
+import { getTrafficCctv } from "@/services/traffic/cctv.service";
+import { getJourneyTimes } from "@/services/traffic/journey-time.service";
+import { getCitybusEta } from "@/services/bus/ctb-eta.service";
 
 export default async function DashboardPage() {
   const [cctv, journeyTime, eta] = await Promise.all([
-    fetchJson("/api/traffic/cctv"),
-    fetchJson("/api/traffic/journey-time"),
-    fetchJson("/api/bus/eta")
+    getTrafficCctv(),
+    getJourneyTimes(),
+    getCitybusEta()
   ]);
 
   return (
