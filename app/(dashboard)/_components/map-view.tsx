@@ -14,16 +14,11 @@ type Props = {
 
 export default function MapView({ cctv, journeyTimes, etas }: Props) {
   return (
-    <div className="grid gap-6 lg:grid-cols-2">
-      <section className="h-[70vh] overflow-hidden rounded-xl border border-slate-800">
+    <div style={{ display: "grid", gap: 24, gridTemplateColumns: "1fr 1fr", padding: 24 }}>
+      <section style={{ height: "70vh", overflow: "hidden", border: "1px solid #334155", borderRadius: 12 }}>
         <MapContainer center={center} zoom={11} scrollWheelZoom={false} style={{ height: "100%", width: "100%" }}>
-          <TileLayer
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            attribution="&copy; OpenStreetMap contributors"
-          />
-          <Marker position={center}>
-            <Popup>Hong Kong</Popup>
-          </Marker>
+          <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" attribution="&copy; OpenStreetMap contributors" />
+          <Marker position={center}><Popup>Hong Kong</Popup></Marker>
           {cctv.filter(x => Number.isFinite(x.lat) && Number.isFinite(x.lon)).map((cam) => (
             <Marker key={cam.id} position={[cam.lat as number, cam.lon as number] as LatLngExpression}>
               <Popup>
@@ -37,14 +32,14 @@ export default function MapView({ cctv, journeyTimes, etas }: Props) {
         </MapContainer>
       </section>
 
-      <section className="space-y-4">
-        <div className="rounded-xl border border-slate-800 bg-slate-900 p-4">
-          <h2 className="mb-3 text-lg font-medium">Journey Time</h2>
-          <pre className="text-xs whitespace-pre-wrap">{JSON.stringify(journeyTimes, null, 2)}</pre>
+      <section style={{ display: "grid", gap: 16 }}>
+        <div style={{ border: "1px solid #334155", borderRadius: 12, background: "#0f172a", padding: 16 }}>
+          <h2>Journey Time</h2>
+          <pre style={{ fontSize: 12, whiteSpace: "pre-wrap" }}>{JSON.stringify(journeyTimes, null, 2)}</pre>
         </div>
-        <div className="rounded-xl border border-slate-800 bg-slate-900 p-4">
-          <h2 className="mb-3 text-lg font-medium">ETA</h2>
-          <pre className="text-xs whitespace-pre-wrap">{JSON.stringify(etas, null, 2)}</pre>
+        <div style={{ border: "1px solid #334155", borderRadius: 12, background: "#0f172a", padding: 16 }}>
+          <h2>ETA</h2>
+          <pre style={{ fontSize: 12, whiteSpace: "pre-wrap" }}>{JSON.stringify(etas, null, 2)}</pre>
         </div>
       </section>
     </div>

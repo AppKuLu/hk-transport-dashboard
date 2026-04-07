@@ -1,1 +1,1 @@
-export type BusEta = { route: string; stop: string; eta: string };
+export type EtaItem = { route: string; stop: string; eta: string; dest?: string };
