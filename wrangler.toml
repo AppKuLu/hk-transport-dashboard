@@ -1,0 +1,9 @@
+# Cloudflare Pages config
+name = "hk-transport-dashboard"
+compatibility_date = "2026-04-08"
+compatibility_flags = ["nodejs_compat"]
+
+pages_build_output_dir = ".vercel/output/static"
+
+[vars]
+NEXT_PUBLIC_BASE_URL = "https://hk-transport-dashboard.pages.dev"
