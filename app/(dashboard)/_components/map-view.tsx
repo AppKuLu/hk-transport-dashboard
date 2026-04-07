@@ -12,12 +12,13 @@ const MapContainer = dynamic(
 
 const center: LatLngExpression = [22.3193, 114.1694];
 
-type MapViewProps = {
-  journeyTimes?: unknown;
-  etas?: unknown;
+type Props = {
+  cctv: Array<{ id: string; name: string; lat?: number; lon?: number; imageUrl?: string }>;
+  journeyTimes: Array<{ id: string; name: string; direction?: string; minutes?: number; updatedAt?: string }>;
+  etas: Array<{ route: string; stop: string; eta: string; dest?: string }>;
 };
 
-export default function MapView({ journeyTimes, etas }: MapViewProps) {
+export default function MapView({ cctv, journeyTimes, etas }: Props) {
   return (
     <div className="grid gap-6 lg:grid-cols-2">
       <section className="h-[70vh] overflow-hidden rounded-xl border border-slate-800">
@@ -34,6 +35,23 @@ export default function MapView({ journeyTimes, etas }: MapViewProps) {
           <Marker position={center}>
             <Popup>Hong Kong</Popup>
           </Marker>
+
+          {cctv
+            .filter((x) => Number.isFinite(x.lat) && Number.isFinite(x.lon))
+            .map((cam) => (
+              <Marker key={cam.id} position={[cam.lat as number, cam.lon as number]}>
+                <Popup>
+                  <div>
+                    <div>{cam.name}</div>
+                    {cam.imageUrl ? (
+                      <a href={cam.imageUrl} target="_blank" rel="noreferrer">
+                        Open image
+                      </a>
+                    ) : null}
+                  </div>
+                </Popup>
+              </Marker>
+            ))}
         </MapContainer>
       </section>
 

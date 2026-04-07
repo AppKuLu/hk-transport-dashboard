@@ -1,2 +1,22 @@
 import { fetchJson } from "@/lib/http";
-export async function getCitybusEta() { const data = await fetchJson("https://rt.data.gov.hk/v2/transport/citybus/eta/CTB/962X/STOP_ID/1").catch(() => ({})); return { items: [{ route: "A11", stop: "港鐵香港站", eta: "6 分鐘" }], raw: data }; }
+
+const CTB_BASE = "https://rt.data.gov.hk/v2/transport/citybus";
+
+export async function getCitybusEta() {
+  const company = "CTB";
+  const route = "A11";
+  const stop = "000123";
+  const url = `${CTB_BASE}/eta/${company}/${stop}/${route}`;
+
+  const data = await fetchJson(url).catch(() => ({} as any));
+  const rows = Array.isArray(data?.data) ? data.data : [];
+
+  const items = rows.slice(0, 10).map((x: any) => ({
+    route,
+    stop,
+    eta: String(x.eta ?? x.eta_min ?? ""),
+    dest: String(x.dest_tc ?? x.dest_en ?? "")
+  }));
+
+  return { items, source: url };
+}
