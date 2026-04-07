@@ -1,3 +1,5 @@
+export const runtime = "edge";
+
 import { NextResponse } from "next/server";
 import { getJourneyTimes } from "@/services/traffic/journey-time.service";
 

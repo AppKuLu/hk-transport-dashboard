@@ -1,3 +1,5 @@
+export const runtime = "edge";
+
 import { NextResponse } from "next/server";
 import { getTrafficCctv } from "@/services/traffic/cctv.service";
 
